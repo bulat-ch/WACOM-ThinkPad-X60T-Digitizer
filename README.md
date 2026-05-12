@@ -24,6 +24,8 @@ It's all.
 Thanks for ```Mystic-X``` from [thinkpad-forum.de](https://thinkpad-forum.de/threads/wacom-digitizer-aus-x6-tablet-etwas-analysiert.159569/)! 
 
 
+How I did:
+![My version](https://github.com/bulat-ch/WACOM-ThinkPad-X60T-Digitizer/blob/main/images/photo_2026-05-12_19-55-46.jpg)
 ## OS part.
 
 Dependencies (for ArchLinux): ```python-pyserial``` and ```python-evdev```
