@@ -1,5 +1,6 @@
 # WACOM-ThinkPad-X60T-Digitizer
-It's working now as a tablet
+
+It works!
 
 
 ## Hardware part.
@@ -19,7 +20,8 @@ Pin 9 - UART RX
 ```
 It's all.
 
-br>![](https://github.com/bulat-ch/WACOM-ThinkPad-X60T-Digitizer/blob/main/images/Connections-Thinkpad-forum-de_Mystic-X.jpg)
+![](https://github.com/bulat-ch/WACOM-ThinkPad-X60T-Digitizer/blob/main/images/Connections-Thinkpad-forum-de_Mystic-X.jpg)
+
 Thanks for ```Mystic-X``` from [thinkpad-forum.de](https://thinkpad-forum.de/threads/wacom-digitizer-aus-x6-tablet-etwas-analysiert.159569/)! 
 
 
