@@ -99,6 +99,7 @@ def main():
     print("Работаю... Ctrl+C для остановки.")
 
     buf = bytearray()
+    last_eraser = None  # отслеживаем смену инструмента
 
     try:
         while True:
@@ -119,6 +120,16 @@ def main():
 
                 if pkt is None:
                     continue
+
+                # Сброс при смене инструмента
+                if last_eraser is not None and last_eraser != pkt["eraser"]:
+                    ui.write(e.EV_KEY, e.BTN_TOUCH,       0)
+                    ui.write(e.EV_KEY, e.BTN_TOOL_PEN,    0)
+                    ui.write(e.EV_KEY, e.BTN_TOOL_RUBBER, 0)
+                    ui.write(e.EV_KEY, e.BTN_STYLUS,      0)
+                    ui.write(e.EV_ABS, e.ABS_PRESSURE,    0)
+                    ui.syn()
+                last_eraser = pkt["eraser"]
 
                 # Отправляем события
                 ui.write(e.EV_ABS, e.ABS_X, pkt["x"])
@@ -141,6 +152,9 @@ def main():
     finally:
         ui.close()
         ser.close()
+
+if __name__ == "__main__":
+    main()
 
 if __name__ == "__main__":
     main()
