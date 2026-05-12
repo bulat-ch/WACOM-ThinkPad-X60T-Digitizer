@@ -1,7 +1,6 @@
-# WACOM-ThinkPad-X60T-Digitizer
+# WACOM-ThinkPad-X60T-Digitizer (WIP!)
 
-It works!
-
+It works!  [Youtube link](https://youtu.be/RoAJn2lIkPo)
 
 ## Hardware part.
 
