@@ -48,7 +48,7 @@ def create_uinput():
             (e.ABS_TILT_Y,   AbsInfo(value=0, min=-63, max=63,       fuzz=0, flat=0, resolution=0)),
         ],
     }
-    ui = UInput(capabilities, name="Wacom Serial Digitizer", version=0x1)
+    ui = UInput(capabilities, name="Wacom Serial Digitizer SU-1208E-01X", version=0x1)
     return ui
 
 def parse_isdv4(buf):
