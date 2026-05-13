@@ -50,5 +50,5 @@ sudo python ./wacom_tp_x60t_isdv4.py
 
 
 TO DO:
-1. via rp2040, STM32?
-2. add support for resistive touchpanel
+1. connection via USB (ESP32-S3 Supermini?)
+2. Hardware disable of a resistive/capacitive touch (causes bugs)
