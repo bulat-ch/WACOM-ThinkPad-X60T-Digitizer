@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+
+## For WACOM DIGITIZER UNIT SU-1208E-01X (wich used in ThinkPad X60 Tablet with 1024x768 display) ##
+
 import serial
 import evdev
 from evdev import UInput, AbsInfo, ecodes as e
