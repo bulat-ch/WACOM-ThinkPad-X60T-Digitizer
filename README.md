@@ -51,5 +51,4 @@ sudo python ./wacom_tp_x60t_isdv4.py
 
 
 TO DO:
-1. connection via USB (ESP32-S3 Supermini?)
-2. Hardware disable of a resistive/capacitive touch (causes bugs)
+1. Connect to USB using ESP32-S3 Supermini (?)
