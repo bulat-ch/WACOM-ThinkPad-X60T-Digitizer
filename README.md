@@ -4,6 +4,7 @@ It works!  [Youtube link](https://youtu.be/RoAJn2lIkPo)
 
 
 This project is an unofficial interoperability implementation for legacy ISDV4-compatible EMR panel.
+
 Wacom is a trademark of Wacom Co., Ltd.
 
 ## Hardware part.
