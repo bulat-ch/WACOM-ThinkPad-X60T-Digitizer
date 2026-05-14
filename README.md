@@ -2,6 +2,10 @@
 
 It works!  [Youtube link](https://youtu.be/RoAJn2lIkPo)
 
+
+This project is an unofficial interoperability implementation for legacy ISDV4-compatible EMR panel.
+Wacom is a trademark of Wacom Co., Ltd.
+
 ## Hardware part.
 
 ### What you need:
@@ -24,7 +28,7 @@ Pin 9 - UART RX
 
 It's all.
 
-Thanks for ```Mystic-X``` from [thinkpad-forum.de](https://thinkpad-forum.de/threads/wacom-digitizer-aus-x6-tablet-etwas-analysiert.159569/)! 
+Thanks for ```Mystic-X``` from [thinkpad-forum.de](https://thinkpad-forum.de/threads/wacom-digitizer-aus-x6-tablet-etwas-analysiert.159569/) and [linuxwacom documentation of ISDV4 Protocol](https://github.com/linuxwacom/input-wacom/wiki/For-Developers:-ISDV4-Protocol)! 
 
 
 ## OS part.
