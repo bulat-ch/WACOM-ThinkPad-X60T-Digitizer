@@ -57,3 +57,4 @@ sudo python ./wacom_tp_x60t_isdv4.py
 
 TO DO:
 1. Connect to USB using ESP32-S3 Supermini (?)
+2. Check (and adopt?) another one type of EMR digitizer what used with 1400x1050 panel.
