@@ -24,7 +24,7 @@ Pin 9 - UART RX
 ```
 ![](https://github.com/bulat-ch/WACOM-ThinkPad-X60T-Digitizer/blob/main/images/IMG_20260514_140713_1.jpg)
 
-2. Disconnect or cut UART lines from touchpanel (or just desolder GUNZE AHL-71N chip), because it can cause bug with teleporting cursor even it set up properly:
+2. Disconnect or cut UART lines from chip of resistive touchpanel (or just desolder GUNZE AHL-71N chip), because it can cause bug with teleporting cursor even it set up properly:
 ![](https://github.com/bulat-ch/WACOM-ThinkPad-X60T-Digitizer/blob/main/images/IMG_20260514_140700_1.jpg)
 
 It's all.
