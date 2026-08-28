@@ -25,7 +25,7 @@
 //  НАСТРОЙКА Arduino IDE:
 //  - USB Mode:         "USB-OTG (TinyUSB)"
 //  - USB CDC On Boot:  "Disabled"
-//  - CPU Frequency:    80 MHz
+//  - CPU Frequency:    40 MHz
 //  - Плата:            "ESP32S3 Dev Module", в Board Manager "esp32" by Espressif Systems, v2.0.17
 //  - Adafruit TinyUSB Library НЕ нужна
 // =============================================================================
