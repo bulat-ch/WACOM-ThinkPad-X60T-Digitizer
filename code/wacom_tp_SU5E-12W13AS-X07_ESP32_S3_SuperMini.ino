@@ -9,7 +9,7 @@
 //  а младшие 2 бита X и Y лежат в byte6 (см. parse_wacom4).
 //  Источник формата: https://github.com/linuxwacom/input-wacom/wiki/For-Developers:-ISDV4-Protocol
 // =============================================================================
-// 
+//
 //  ПОДКЛЮЧЕНИЕ:
 //  ┌─────────────────────┬────────────────────────────┐
 //  │  SU5E-12W13AS-X07   │ ESP32-S3 SuperMini         │
@@ -30,26 +30,17 @@
 
 #include "USB.h"
 #include "USBHID.h"
-#include "tusb.h"   // нужен для tud_suspend_cb/tud_resume_cb
+#include "WiFi.h"   // только чтобы явно выключить радио, WiFi тут не используется
 
 // --- Пины UART ---
 #define UART_RX_PIN     4
 #define UART_TX_PIN     5
 
-// --- Пины управления панелью ---
-#define PIN_RESET       6   // Активный LOW. Сброс панели.
-#define PIN_SLEEP       7   // LOW = панель активна, HIGH = панель спит.
-
-// --- Частоты CPU для энергосбережения (не настоящий sleep, а понижение частоты —
-//     гарантированно просыпается само, в отличие от light sleep с USB) ---
-#define CPU_FREQ_NORMAL  80
-#define CPU_FREQ_SUSPEND 40
-
 // --- Протокол ISDV4 ---
 #define WACOM4_BAUD       19200
-#define WACOM4_PACKET_LEN 9   // было 7 — реальный пакет ISDV4 длиннее на 2 байта tilt
+#define WACOM4_PACKET_LEN 9   // 9 байт (byte7/8 — X/Y tilt, не используются)
 
-// --- Лимиты координат (взяты из реального ответа панели на команду "*") ---
+// --- Лимиты координат ---
 #define MAX_X        6576
 #define MAX_Y        4128
 #define MAX_PRESSURE 255
@@ -173,48 +164,6 @@ PenReport pen_report = {};
 uint8_t active_tool = TOOL_NONE;
 
 // =============================================================================
-//  УПРАВЛЕНИЕ ПАНЕЛЬЮ (RESET / SLEEP)
-// =============================================================================
-void panel_reset() {
-  digitalWrite(PIN_RESET, LOW);   // Активный LOW
-  delay(10);
-  digitalWrite(PIN_RESET, HIGH);
-  delay(100);
-}
-
-void panel_sleep_on() {
-  digitalWrite(PIN_SLEEP, HIGH);  // Панель засыпает
-}
-
-void panel_sleep_off() {
-  digitalWrite(PIN_SLEEP, LOW);   // Панель активна
-}
-
-// =============================================================================
-//  РЕАКЦИЯ НА СОН/ПРОБУЖДЕНИЕ ХОСТА (USB bus suspend/resume, НЕ HID-репорт!)
-//
-//  tud_suspend_cb() / tud_resume_cb() — это weak-колбэки самого TinyUSB-стека,
-//  вызываются автоматически при переходе шины USB в suspend и обратно.
-// =============================================================================
-volatile bool reset_pending   = false;
-uint32_t      reset_at_millis = 0;
-
-extern "C" void tud_suspend_cb(bool remote_wakeup_en) {
-  (void) remote_wakeup_en;
-  panel_sleep_on();
-  setCpuFrequencyMhz(CPU_FREQ_SUSPEND);
-}
-
-extern "C" void tud_resume_cb(void) {
-  setCpuFrequencyMhz(CPU_FREQ_NORMAL);
-  panel_sleep_off();
-  // Reset делаем не прямо здесь (колбэк дёргается из USB-задачи, delay() тут
-  // не к месту), а отложенно — через 250 мс, из loop().
-  reset_at_millis = millis() + 250;
-  reset_pending    = true;
-}
-
-// =============================================================================
 //  Разбор пакета пера протокола ISDV4 (9 байт, без наклона):
 //
 //  byte0: bit7=1(sync) bit6=0(event) bit5=proximity bit2=eraser/side2
@@ -256,11 +205,10 @@ PenState parse_wacom4(uint8_t* pkt) {
 //  SETUP
 // =============================================================================
 void setup() {
-  // Пины управления панелью
-  pinMode(PIN_RESET, OUTPUT);
-  pinMode(PIN_SLEEP, OUTPUT);
-  panel_sleep_off();   // панель активна сразу при включении
-  digitalWrite(PIN_RESET, HIGH);
+  // Радио (WiFi/BT) в этом проекте не используется вообще — на всякий случай
+  // выключаем явно, чтобы точно не жгло лишний ток в простое.
+  WiFi.mode(WIFI_OFF);
+  btStop();
 
   // USB HID
   USB.productName("DIGITIZER UNIT SU5E-12W13AS-X07");
@@ -273,8 +221,6 @@ void setup() {
 
   Serial1.begin(WACOM4_BAUD, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
   delay(100);
-
-  panel_reset();   // сброс панели при старте
 }
 
 // =============================================================================
@@ -284,12 +230,6 @@ uint8_t buf[WACOM4_PACKET_LEN * 2];
 uint8_t buf_len = 0;
 
 void loop() {
-  // --- Отложенный reset панели через 250 мс после пробуждения хоста ---
-  if (reset_pending && (int32_t)(millis() - reset_at_millis) >= 0) {
-    reset_pending = false;
-    panel_reset();
-  }
-
   // --- Чтение UART ---
   while (Serial1.available()) {
     uint8_t b = Serial1.read();
